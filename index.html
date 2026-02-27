@@ -1,51 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔥 FPS Booster Pro - 300% FPS Instantly FREE!</title>
-    <meta name="viewport" content="width=device-width">
-    <!-- ADSTERRA INSTANT POPUNDER -->
-    <script type="text/javascript">
-        atOptions = {'key': 'PASTE-YOUR-ADSTERRA-KEY-HERE', 'format': 'iframe', 'height': 90, 'width': 728, 'params': {}};
-    </script>
-    <script type="text/javascript" src="//www.topcreativeformat.com/YOUR-ID/invoke.js"></script>
+    <meta name="description" content="Free FPS booster for PUBG, Free Fire, COD. Clean RAM, boost GPU, 300% FPS increase instantly!">
+    
+    <!-- YOUR ADSTERRA POPUNDER ✅ -->
+    <script src="https://pl28807841.effectivegatecpm.com/28/47/f2/2847f23c9266f853f7fc1e5f176a8a22.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(45deg, #000, #001100, #000);
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; text-align: center; }
+        h1 { font-size: clamp(2em, 8vw, 4em); margin: 20px 0; text-shadow: 0 0 20px #00ff00; }
+        .boost-btn {
+            background: linear-gradient(45deg, #00ff00, #00cc00);
+            color: black;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,255,0,0.5);
+            transition: all 0.3s;
+        }
+        .boost-btn:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(0,255,0,0.8); }
+        .status { font-size: 1.5em; margin: 30px 0; min-height: 100px; }
+        .matrix { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        @media (max-width: 600px) { .boost-btn { padding: 15px 30px; font-size: 1.2em; } }
+    </style>
 </head>
-<body style="background:#000;color:#0f0;font-family:monospace;">
+<body>
+    <!-- Matrix Background Effect -->
+    <canvas id="matrix" class="matrix"></canvas>
     
-    <!-- HEADER ADSTERRA BANNER -->
-    <div style="text-align:center;margin:20px 0;">
-        <ins class="adsbygoogle" style="display:inline-block;width:100%;height:90px;"></ins>
-    </div>
-    
-    <center>
-        <h1 style="color:#00ff00;font-size:3em;">🚀 FPS BOOSTER PRO</h1>
-        <p style="color:#ccc;font-size:1.2em;">Android/iOS/PC - 300% FPS Instantly!</p>
+    <div class="container">
+        <h1>🚀 FPS BOOSTER PRO</h1>
+        <p style="font-size: 1.2em; color: #ccc; margin-bottom: 30px;">
+            PUBG • Free Fire • COD • 300% FPS Instantly • No Root • 100% Safe
+        </p>
         
-        <!-- BOOST BUTTON -->
-        <button onclick="boostFPS()" style="background:#00ff00;color:black;padding:20px 40px;font-size:2em;border:none;border-radius:10px;cursor:pointer;">
+        <!-- BOOST BUTTON (POPUNDER TRIGGER) -->
+        <button class="boost-btn" onclick="boostFPS()">
             🎮 BOOST FPS NOW (FREE)
         </button>
         
-        <!-- FAKE BOOST ANIMATION -->
-        <div id="boost-status" style="margin:30px;font-size:1.5em;color:#00ff00;"></div>
-    </center>
-    
-    <!-- FOOTER ADSTERRA -->
-    <div style="text-align:center;margin:50px 0;">
-        <ins class="adsbygoogle" style="display:block;width:100%;height:90px;"></ins>
+        <!-- STATUS DISPLAY -->
+        <div id="status" class="status">Ready to boost your FPS...</div>
+        
+        <!-- GAMES LOGOS -->
+        <div style="margin-top: 50px;">
+            <img src="https://via.placeholder.com/100x50/00ff00/000?text=PUBG" alt="PUBG">
+            <img src="https://via.placeholder.com/100x50/ff0000/000?text=FF" alt="Free Fire">
+            <img src="https://via.placeholder.com/100x50/0000ff/000?text=COD" alt="COD">
+        </div>
     </div>
-    
+
     <script>
-        function boostFPS() {
-            document.getElementById('boost-status').innerHTML = '🔄 Scanning RAM... 23% <br>🧹 Cleaning Cache... 67% <br>⚡ Boosting GPU... 100% <br>✅ FPS BOOSTED +247%!';
-            
-            // Trigger Popunder
-            setTimeout(() => {
-                window.open('https://your-adsterra-link.com', '_blank');
-            }, 2000);
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        // Popunder Triggers (3x Revenue!)
+        function triggerPopunder() {
+            // Multiple popunders
+            window.open('https://google.com', '_blank');
+            window.open('https://youtube.com', '_blank');
+            setTimeout(() => window.focus(), 100);
         }
         
-        // Auto-boost every 60 sec
-        setInterval(boostFPS, 60000);
+        // FPS Boost Animation + Popunder
+        function boostFPS() {
+            const status = document.getElementById('status');
+            status.innerHTML = '🔍 Scanning RAM... 23%<br>🧹 Clearing Cache... 58%<br>⚡ GPU Overclock... 89%<br>✅ FPS BOOST COMPLETE +247%!';
+            
+            // POPUNDER FIRE! 🔥
+            setTimeout(triggerPopunder, 1500);
+            
+            // Visual Effects
+            document.querySelector('.boost-btn').style.transform = 'scale(0.95)';
+            setTimeout(() => document.querySelector('.boost-btn').style.transform = 'scale(1)', 200);
+        }
+        
+        // AUTO BOOST every 90 seconds
+        setInterval(() => {
+            if (Math.random() > 0.7) boostFPS();
+        }, 90000);
+        
+        // Matrix Animation
+        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0,0,0,0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+            
+            drops.forEach((y, i) => {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                else drops[i]++;
+            });
+        }
+        setInterval(drawMatrix, 50);
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
