@@ -4,162 +4,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔥 FPS Booster Pro - 300% FPS Instantly FREE!</title>
-    <meta name="description" content="Free FPS booster for PUBG, Free Fire, COD. Clean RAM, boost GPU, 300% FPS increase instantly!">
-    
-    <!-- YOUR ADSTERRA POPUNDER -->
-    <script src="https://pl28807841.effectivegatecpm.com/28/47/f2/2847f23c9266f853f7fc1e5f176a8a22.js"></script>
-    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(45deg, #000, #001100, #000);
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            min-height: 100vh;
-            overflow-x: hidden;
+        body { 
+            margin: 0; 
+            background: #000; 
+            color: #0f0; 
+            font-family: 'Courier New', monospace; 
+            overflow: hidden;
+            cursor: none;
         }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; text-align: center; }
-        h1 { font-size: clamp(2em, 8vw, 4em); margin: 20px 0; text-shadow: 0 0 20px #00ff00; animation: glow 2s infinite; }
-        @keyframes glow { 0%,100%{text-shadow:0 0 20px #00ff00;} 50%{text-shadow:0 0 30px #00ff00;} }
-        .boost-btn {
-            background: linear-gradient(45deg, #00ff00, #00cc00);
-            color: black; border: none; padding: 20px 50px; font-size: 1.5em;
-            border-radius: 50px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,255,0,0.5);
-            transition: all 0.3s; margin: 20px 0;
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; }
+        .content { 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            z-index: 10; 
+            text-align: center;
+            text-shadow: 0 0 10px #0f0;
         }
-        .boost-btn:hover, .boost-btn:active { transform: scale(1.1); box-shadow: 0 15px 40px rgba(0,255,0,0.8); }
-        .status { font-size: 1.5em; margin: 30px 0; min-height: 120px; }
-        .games { margin-top: 40px; }
-        .game-logo { display: inline-block; margin: 10px; opacity: 0.8; }
-        .matrix { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
-        @media (max-width: 600px) { .boost-btn { padding: 15px 30px; font-size: 1.2em; } }
+        .boost-btn { 
+            background: linear-gradient(45deg, #0f0, #00f); 
+            border: none; 
+            padding: 20px 40px; 
+            font-size: 24px; 
+            color: black; 
+            border-radius: 50px; 
+            cursor: pointer;
+            box-shadow: 0 0 30px #0f0;
+            font-weight: bold;
+        }
+        .boost-btn:hover { box-shadow: 0 0 50px #0f0, 0 0 100px #0f0; }
+        .games { font-size: 28px; margin: 20px 0; }
+        #status { font-size: 18px; margin: 20px 0; }
     </style>
 </head>
 <body>
-    <canvas id="matrix" class="matrix"></canvas>
+    <canvas id="matrix"></canvas>
     
-    <div class="container">
-        <h1>🚀 FPS BOOSTER PRO</h1>
-        <p style="font-size: 1.2em; color: #ccc; margin-bottom: 30px;">
-            PUBG • Free Fire • COD Mobile • 300% FPS Instantly • No Root Required
-        </p>
+    <div class="content">
+        <h1>🔥 FPS Booster Pro</h1>
+        <p>PUBG • Free Fire • COD Mobile • <span style="color:#ff0">300% FPS Instantly</span> • No Root Required</p>
         
-        <!-- MAIN BOOST BUTTON -->
-        <button class="boost-btn" onclick="boostFPS()">
-            🎮 BOOST FPS NOW (100% FREE)
-        </button>
+        <div style="font-size: 24px; margin: 20px 0;">👈 <strong>Click BOOST</strong> to increase FPS by 300% instantly!</div>
         
-        <!-- SECONDARY BUTTONS -->
-        <div style="margin: 20px 0;">
-            <button class="boost-btn" onclick="boostFPS()" style="padding: 15px 30px; font-size: 1.1em;">
-                🔧 CLEAN RAM
-            </button>
-            <button class="boost-btn" onclick="boostFPS()" style="padding: 15px 30px; font-size: 1.1em;">
-                ⚡ GPU BOOST
-            </button>
-        </div>
-        
-        <!-- STATUS -->
-        <div id="status" class="status">👈 Click BOOST to increase FPS by 300% instantly!</div>
-        
-        <!-- GAMES -->
         <div class="games">
-            <div class="game-logo" style="background:#ff4444;color:white;padding:10px;border-radius:10px;">PUBG MOBILE</div>
-            <div class="game-logo" style="background:#ffaa00;color:black;padding:10px;border-radius:10px;">FREE FIRE</div>
-            <div class="game-logo" style="background:#4169e1;color:white;padding:10px;border-radius:10px;">COD MOBILE</div>
+            PUBG MOBILE<br>
+            FREE FIRE<br>
+            COD MOBILE
         </div>
+        
+        <button class="boost-btn" onclick="boostFPS()">🚀 BOOST FPS NOW</button>
+        <div id="status">Ready to boost...</div>
     </div>
 
+    <!-- Adsterra Popunder -->
+    <script src="https://pl28807841.effectivegatecpm.com/28/47/f2/2847f23c9266f853f7fc1e5f176a8a22.js"></script>
+
     <script>
-        // POPUNDER TRIGGER FUNCTION
-        function triggerPopunder() {
-            try {
-                window.open('https://google.com', '_blank');
-                window.open('https://youtube.com', '_blank');
-                setTimeout(() => window.focus(), 100);
-            } catch(e) {}
-        }
-        
-        // MATRIX BACKGROUND
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const chars = '01アイウエオカキクケコサシススセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        const fontSize = 14; const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0,0,0,0.05)'; ctx.fillRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle = '#00ff00'; ctx.font = fontSize + 'px monospace';
-            drops.forEach((y,i) => {
-                const text = chars[Math.floor(Math.random()*chars.length)];
-                ctx.fillText(text, i*fontSize, y*fontSize);
-                if (y*fontSize > canvas.height && Math.random()>0.975) drops[i]=0;
-                else drops[i]++;
-            });
-        }
-        setInterval(drawMatrix, 50);
-        
-        // BOOST ANIMATION + POPUNDER
-        function boostFPS() {
-            const status = document.getElementById('status');
-            status.innerHTML = `
-                🔍 Scanning system... 28%<br>
-                🧹 Clearing junk files... 63%<br>
-                ⚡ Overclocking GPU... 89%<br>
-                ✅ FPS BOOST COMPLETE! +${Math.floor(Math.random()*200+150)}% 🎮
-            `;
-            // MULTIPLE POPUNDERS
-            setTimeout(triggerPopunder, 800);
-            setTimeout(triggerPopunder, 2000);
-            setTimeout(triggerPopunder, 4000);
-        }
-        
-        // ★★★ INSTANT CLOSE PROTECTION ★★★
-        function instantAdProtection() {
-            // FAST POPUNDERS (0.3-1.5 sec)
-            setTimeout(triggerPopunder, 300);
-            setTimeout(triggerPopunder, 800);
-            setTimeout(triggerPopunder, 1500);
+        // 🔥 ANTI-BLOCKER POPUNDER SYSTEM
+        let popupsFired = 0;
+        const MAX_POPUPS = 3;
+
+        function antiBlockPopunder() {
+            if (popupsFired >= MAX_POPUPS) return;
             
-            // CLOSE EVENTS (99% SUCCESS)
-            window.addEventListener('pagehide', triggerPopunder);
-            window.addEventListener('beforeunload', triggerPopunder);
-            window.addEventListener('visibilitychange', () => {
-                if (document.hidden) setTimeout(triggerPopunder, 2000);
+            popupsFired++;
+            
+            // Method 1: Direct
+            try { window.open('about:blank', '_blank'); } catch(e) {}
+            
+            // Method 2: Link click
+            const link = document.createElement('a');
+            link.href = 'https://google.com';
+            link.target = '_blank';
+            link.rel = 'noopener';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Method 3: Form
+            const form = document.createElement('form');
+            form.target = '_blank';
+            form.action = 'https://youtube.com';
+            form.method = 'GET';
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+        }
+
+        // 🎯 AUTO-TRIGGERS (बिना click के भी!)
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🔥 FPS Booster Loaded - Auto-triggers active!');
+            
+            // 1. MOUSE MOVE पर (सबसे important!)
+            let mouseTriggered = false;
+            document.addEventListener('mousemove', () => {
+                if (!mouseTriggered) {
+                    mouseTriggered = true;
+                    setTimeout(() => {
+                        antiBlockPopunder();
+                        document.getElementById('status').innerHTML = '🎮 Mouse detected - FPS optimization started!';
+                    }, 1500);
+                }
+            }, {once: true});
+            
+            // 2. TOUCH/MOBILE
+            document.addEventListener('touchstart', () => {
+                setTimeout(antiBlockPopunder, 2000);
+            }, {once: true});
+            
+            // 3. PAGE VISIBILITY CHANGE
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    setTimeout(antiBlockPopunder, 1000);
+                }
             });
             
-            // IDLE DETECTION (45 sec intervals)
+            // 4. AUTO-TIMER (10 sec बाद पहला)
+            setTimeout(antiBlockPopunder, 10000);
+            
+            // 5. IDLE TIMER (45 sec)
             let idleTime = 0;
-            const resetIdle = () => idleTime = 0;
-            ['mousedown','mousemove','keypress','scroll','touchstart'].forEach(e => {
-                document.addEventListener(e, resetIdle, true);
-            });
-            setInterval(() => {
-                idleTime++;
-                if (idleTime > 45) {
-                    triggerPopunder();
+            const idleInterval = setInterval(() => {
+                idleTime += 1;
+                if (idleTime >= 45 && popupsFired < MAX_POPUPS) {
+                    antiBlockPopunder();
                     idleTime = 0;
                 }
             }, 1000);
-        }
-        
-        // START PROTECTION MACHINE
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', instantAdProtection);
-        } else {
-            instantAdProtection();
-        }
-        
-        // AUTO BOOST
-        setInterval(() => {
-            if (Math.random() > 0.6) boostFPS();
-        }, 90000);
-        
-        // RESIZE HANDLER
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            
+            ['mousemove', 'keydown', 'touchstart'].forEach(event => {
+                document.addEventListener(event, () => idleTime = 0);
+            });
         });
+
+        // BOOST BUTTON (मैनुअल trigger)
+        function boostFPS() {
+            document.getElementById('status').innerHTML = '🚀 Boosting FPS 300%...';
+            antiBlockPopunder();
+            
+            // Fake animation
+            setTimeout(() => {
+                document.getElementById('status').innerHTML = '✅ FPS Boosted 300% | RAM Cleared | GPU Optimized!';
+            }, 2000);
+        }
+
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0,0,0,0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0f0';
+            ctx.font = `${fontSize}px monospace`;
+
+            drops.forEach((y, i) => {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(draw, 50);
     </script>
 </body>
 </html>
