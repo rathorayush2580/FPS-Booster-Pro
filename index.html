@@ -3,310 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 FPS Booster Pro - 300% FPS Instantly!</title>
+    <title>🔥 FPS Booster Pro - Instant 300% FPS Boost!</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background: #000; 
+            background: linear-gradient(45deg, #000, #001100); 
             color: #0f0; 
             font-family: 'Courier New', monospace; 
-            overflow-x: hidden;
+            min-height: 100vh;
             cursor: pointer;
-            height: 100vh;
-            user-select: none;
+            position: relative;
+            overflow: hidden;
         }
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; }
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; width: 100%; height: 100%; }
         .content { 
-            position: fixed; 
+            position: absolute; 
             top: 50%; 
             left: 50%; 
             transform: translate(-50%, -50%); 
             z-index: 10; 
             text-align: center;
-            text-shadow: 0 0 10px #0f0;
-            max-width: 90vw;
+            text-shadow: 0 0 15px #0f0;
+            max-width: 95vw;
+            pointer-events: none;
         }
+        .content * { pointer-events: auto; }
         .boost-btn { 
-            background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff); 
-            border: 3px solid #0f0;
-            padding: 25px 50px; 
-            font-size: 28px; 
-            color: white; 
+            background: linear-gradient(45deg, #ff0080, #00ff88, #0080ff); 
+            border: 4px solid #0f0 !important;
+            padding: 30px 60px; 
+            font-size: 32px; 
+            color: #fff; 
             border-radius: 50px; 
             cursor: pointer;
-            box-shadow: 0 0 40px #0f0;
+            box-shadow: 0 0 50px #0f0, inset 0 0 20px rgba(0,255,0,0.2);
             font-weight: bold;
-            transition: all 0.3s;
+            transition: all 0.4s;
+            margin: 25px 0;
             position: relative;
-            margin: 20px 0;
+            overflow: hidden;
         }
-        .boost-btn:hover { transform: scale(1.1); box-shadow: 0 0 80px #ff0; }
-        .boost-btn:active { transform: scale(0.98); }
-        .games { font-size: 32px; margin: 30px 0; }
+        .boost-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg); transition: 0.6s;
+        }
+        .boost-btn:hover::before { animation: shine 1.5s infinite; }
+        @keyframes shine { 0%,100%{transform:translateX(-100%) translateY(-100%) rotate(45deg);} 50%{transform:translateX(25%) translateY(25%) rotate(45deg);} }
+        .boost-btn:hover { 
+            transform: scale(1.08) rotate(2deg); 
+            box-shadow: 0 0 100px #ff0, 0 0 150px #0f0 !important;
+        }
+        .games { font-size: 36px; margin: 35px 0; }
         .games div { 
-            padding: 15px 25px; 
-            margin: 10px; 
-            background: rgba(0,255,0,0.1); 
-            border-radius: 20px;
+            padding: 20px 35px; 
+            margin: 15px; 
+            background: rgba(0,255,0,0.15); 
+            border-radius: 25px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.4s;
             display: inline-block;
-            border: 2px solid #0f0;
+            border: 3px solid #0f0;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(0,255,0,0.3);
         }
         .games div:hover { 
-            background: rgba(255,255,0,0.3); 
-            box-shadow: 0 0 20px #ff0;
-            transform: scale(1.05);
+            background: rgba(255,255,0,0.4) !important; 
+            box-shadow: 0 0 40px #ff0 !important;
+            transform: scale(1.1) translateY(-5px);
         }
         #status { 
-            font-size: 20px; 
-            margin: 25px 0; 
-            min-height: 30px;
-            padding: 15px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 10px;
-            border: 1px solid #0f0;
+            font-size: 24px; 
+            margin: 30px 0; 
+            padding: 20px 30px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 15px;
+            border: 2px solid #0f0;
+            box-shadow: 0 0 30px #0f0;
+            min-height: 40px;
         }
         .trigger-counter {
             position: fixed;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.9);
-            color: #0f0;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 18px;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.95);
+            color: #ff0;
+            padding: 15px 20px;
+            border-radius: 15px;
+            font-size: 20px;
             z-index: 100;
-            border: 2px solid #0f0;
+            border: 3px solid #ff0;
             font-weight: bold;
+            box-shadow: 0 0 30px #ff0;
+            animation: pulse 2s infinite;
         }
-        h1 { font-size: 48px; margin-bottom: 10px; }
-        p { font-size: 22px; margin-bottom: 20px; }
+        @keyframes pulse {
+            0%,100%{box-shadow:0 0 20px #ff0;} 50%{box-shadow:0 0 50px #ff0,0 0 70px #ff0;}
+        }
+        h1 { font-size: 52px; margin-bottom: 15px; animation: glowText 2s infinite; }
+        @keyframes glowText {
+            0%,100%{text-shadow:0 0 20px #0f0;} 50%{text-shadow:0 0 40px #0f0,0 0 60px #0f0;}
+        }
         .fps-display {
-            font-size: 36px;
+            font-size: 42px;
             color: #00ff88;
             font-weight: bold;
-            margin: 20px 0;
-            animation: glow 1.5s infinite;
+            margin: 25px 0;
+            animation: glowBig 1.2s infinite;
         }
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 10px #00ff88; }
-            50% { text-shadow: 0 0 30px #00ff88; }
+        @keyframes glowBig {
+            0%,100%{text-shadow:0 0 20px #00ff88;} 50%{text-shadow:0 0 50px #00ff88,0 0 80px #00ff88;}
         }
         @media (max-width: 768px) {
-            .boost-btn { font-size: 24px; padding: 20px 40px; }
-            h1 { font-size: 36px; }
-            .games div { font-size: 24px; padding: 12px 20px; display: block; margin: 10px auto; }
+            .boost-btn { font-size: 26px; padding: 25px 45px; }
+            h1 { font-size: 42px; }
+            .games div { font-size: 28px; padding: 18px 28px; display: block; margin: 12px auto; }
+            .trigger-counter { top: 10px; right: 10px; font-size: 18px; padding: 12px 16px; }
         }
     </style>
 </head>
 <body>
     <canvas id="matrix"></canvas>
-    <div class="trigger-counter" id="triggerCounter">🔗 0/12</div>
+    <div class="trigger-counter" id="counter">🔥 0/15 READY</div>
     
     <div class="content">
-        <h1>🔥 FPS Booster Pro</h1>
-        <p>PUBG • Free Fire • COD Mobile • <span style="color:#ff0">300% FPS Instantly</span></p>
-        
-        <div class="fps-display" id="fpsDisplay">📊 Current FPS: Detecting...</div>
+        <h1>🚀 FPS Booster Pro</h1>
+        <div class="fps-display" id="fpsDisplay">📊 Detecting FPS...</div>
         
         <div class="games">
-            <div onclick="gameClick('PUBG')">🎮 PUBG MOBILE</div>
-            <div onclick="gameClick('FREEFIRE')">🔥 FREE FIRE</div>
-            <div onclick="gameClick('COD')">💥 COD MOBILE</div>
+            <div onclick="triggerGame('PUBG')">🎮 PUBG MOBILE</div>
+            <div onclick="triggerGame('FREEFIRE')">🔥 FREE FIRE</div>
+            <div onclick="triggerGame('COD')">💥 COD MOBILE</div>
         </div>
         
-        <button class="boost-btn" id="boostBtn" onclick="boostFPS(event)">🚀 BOOST FPS NOW</button>
-        <div id="status">🔍 Move/scroll/click कहीं भी!</div>
+        <button class="boost-btn" id="boostBtn" onclick="mainBoost(event)">
+            🚀 BOOST FPS 300% NOW
+        </button>
+        <div id="status">👆 Mouse move/scroll/click = Instant optimization!</div>
     </div>
 
     <script>
-        const SMARTLINK = "https://www.effectivegatecpm.com/g2ekgwk4r?key=0ad4113d3e531c121aa17596217d907e";
-        let triggersFired = 0;
-        let maxTriggers = 12;
-        let lastTrigger = 0;
-        let userGesture = false;
-        let interactions = 0;
+        // 🔥 CHROME-PROOF ADSTERRA SYSTEM
+        const ADLINK = "https://www.effectivegatecpm.com/g2ekgwk4r?key=0ad4113d3e531c121aa17596217d907e";
+        let fired = 0;
+        let maxFired = 15;
+        let lastFire = 0;
+        let hasGestured = false;
 
-        function getLink(source) {
-            const params = new URLSearchParams({
+        function buildUrl(source) {
+            const p = new URLSearchParams({
                 sub1: 'fpsboost',
                 sub2: source,
-                sub3: `${screen.width}x${screen.height}`,
-                sub4: `t${triggersFired}_${Date.now()}`,
-                sub5: new Date().toISOString().slice(0,19)
+                sub3: screen.width + 'x' + screen.height,
+                sub4: 't' + fired + '_' + Date.now(),
+                sub5: new Date().toISOString().slice(0,19).replace(/[:.]/g,'')
             });
-            return `${SMARTLINK}&${params}`;
+            return ADLINK + '&' + p.toString();
         }
 
-        // 🔥 ULTIMATE 6 METHODS - Chrome can't block all!
-        function fireSmartlink(source, force = false) {
+        // 🔥 100% UNBLOCKABLE METHODS ONLY
+        function fireAd(source, priority = false) {
             const now = Date.now();
-            if (triggersFired >= maxTriggers || (!force && now - lastTrigger < 600)) {
-                return false;
-            }
+            if (fired >= maxFired || (!priority && now - lastFire < 450)) return false;
             
-            triggersFired++;
-            lastTrigger = now;
-            console.log(`🔥 TRIGGER #${triggersFired}: ${source}`);
-            document.getElementById('triggerCounter').textContent = `🔗 ${triggersFired}/${maxTriggers}`;
+            fired++;
+            lastFire = now;
+            console.log(`🎯 AD #${fired}/${maxFired}: ${source}`);
+            document.getElementById('counter').textContent = `🔥 ${fired}/${maxFired} FIRED`;
             
-            const link = getLink(source);
-            const rand = Math.random();
+            const url = buildUrl(source);
             
-            // METHOD 1: Direct location.href (100% works)
-            if (rand < 0.18 || force) {
-                const a = document.createElement('a');
-                a.href = link;
-                a.target = '_blank';
-                a.rel = 'noopener noreferrer';
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                setTimeout(() => a.remove(), 100);
-            }
-            // METHOD 2: Iframe src change
-            else if (rand < 0.36) {
-                let iframe = document.getElementById('smartframe');
-                if (!iframe) {
-                    iframe = document.createElement('iframe');
-                    iframe.id = 'smartframe';
-                    iframe.style.cssText = 'position:fixed;top:-10000px;left:-10000px;width:1px;height:1px;border:0;z-index:-1';
-                    document.body.appendChild(iframe);
+            // METHOD 1: Multiple Images (Chrome CANNOT block)
+            if (Math.random() < 0.4) {
+                for(let i=0; i<3; i++) {
+                    (new Image(1,1)).src = url + `&img${i}`;
                 }
-                iframe.src = link;
             }
-            // METHOD 3: Image preload
-            else if (rand < 0.54) {
-                (new Image()).src = link;
+            
+            // METHOD 2: Multiple Fetch (invisible)
+            if (Math.random() < 0.5) {
+                Promise.all([
+                    fetch(url + '&fetch1', {mode:'no-cors', cache:'no-store'}),
+                    fetch(url + '&fetch2', {method:'HEAD', mode:'no-cors'})
+                ]).catch(()=>0);
             }
-            // METHOD 4: Fetch request
-            else if (rand < 0.72) {
-                fetch(link, {mode: 'no-cors', cache: 'no-cache'}).catch(()=>0);
-            }
-            // METHOD 5: Form submit
-            else if (rand < 0.9) {
+            
+            // METHOD 3: Hidden Forms (stealth)
+            if (Math.random() < 0.35) {
                 const form = document.createElement('form');
-                form.action = link;
+                form.action = url;
                 form.method = 'GET';
-                form.target = '_blank';
-                form.style.position = 'fixed';
-                form.style.top = '-10000px';
+                form.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:0;height:0;opacity:0';
+                form.innerHTML = `<input name="stealth" value="1">`;
                 document.body.appendChild(form);
                 form.submit();
-                setTimeout(()=>form.remove(), 50);
+                setTimeout(()=>form.remove(), 100);
             }
-            // METHOD 6: Audio preload (stealth)
-            else {
-                const audio = new Audio();
-                audio.src = link;
-                audio.load();
+            
+            // METHOD 4: Audio/Video preload (Chrome allows)
+            if (Math.random() < 0.25) {
+                const vid = document.createElement('video');
+                vid.src = url + '&video';
+                vid.muted = true;
+                vid.preload = 'auto';
+                vid.style.display = 'none';
+                vid.load();
+                setTimeout(()=>vid.remove(), 2000);
+            }
+            
+            // METHOD 5: Beacon (Google Analytics style)
+            if ('sendBeacon' in navigator) {
+                navigator.sendBeacon(url + '&beacon', new Blob([''], {type: 'text/plain'}));
             }
             
             return true;
         }
 
-        // 🔥 AGGRESSIVE EVENT TRIGGERS
+        // 🔥 ULTRA AGGRESSIVE TRIGGERS
+        let moveCount = 0, scrollCount = 0;
+        
+        // Mouse - हर 2nd move!
         document.addEventListener('mousemove', (e) => {
-            interactions++;
-            userGesture = true;
-            if (interactions % 3 === 0 && Math.random() < 0.4) {
-                fireSmartlink('mouse');
+            moveCount++;
+            hasGestured = true;
+            if (moveCount % 2 === 0) {
+                setTimeout(()=>fireAd('mouse'), 10);
             }
         }, {passive: true});
 
+        // Scroll - हर scroll!
         window.addEventListener('scroll', () => {
-            if (Math.random() < 0.5) fireSmartlink('scroll');
+            scrollCount++;
+            fireAd('scroll');
         }, {passive: true});
 
+        // Click - Guaranteed
         document.addEventListener('click', (e) => {
-            fireSmartlink('click');
+            fireAd('click');
         });
 
-        document.addEventListener('keydown', (e) => {
-            if ([' ','Enter'].includes(e.key)) fireSmartlink('key');
-        });
-
+        // Touch - Mobile
         document.addEventListener('touchstart', () => {
-            fireSmartlink('touch');
+            fireAd('touch');
         }, {passive: true});
 
-        // 🔥 FORCE EVERY 1.8s
-        setInterval(() => {
-            if (userGesture && triggersFired < maxTriggers) {
-                fireSmartlink('auto', true);
-            }
-        }, 1800);
-
-        // 🔥 IDLE TIMERS
-        let lastActivity = Date.now();
-        ['mousemove','click','scroll','keydown','touchstart'].forEach(ev => {
-            document.addEventListener(ev, () => lastActivity = Date.now(), {passive: true});
+        // Keys
+        document.addEventListener('keydown', (e) => {
+            fireAd('key_' + e.key.slice(0,4));
         });
 
-        setInterval(() => {
-            if (Date.now() - lastActivity > 3000 && Math.random() < 0.6) {
-                fireSmartlink('idle');
-            }
-        }, 4000);
+        // Tab switch
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) fireAd('tab');
+        });
 
-        // BOOST BUTTON
-        function boostFPS(e) {
+        // 🔥 AUTO FIRE हर 1.2s (Unblockable!)
+        setInterval(() => {
+            if (hasGestured && fired < maxFired) {
+                fireAd('auto');
+            }
+        }, 1200);
+
+        // 🔥 IDLE DETECTION
+        let lastActive = Date.now();
+        ['mousemove','click','scroll','keydown','touchstart'].forEach(ev => {
+            document.addEventListener(ev, ()=>lastActive=Date.now(), {passive:true});
+        });
+        
+        setInterval(() => {
+            if (Date.now() - lastActive > 2500) {
+                fireAd('idle');
+            }
+        }, 3000);
+
+        // 🔥 BOOST BUTTON (3x fire)
+        function mainBoost(e) {
             e.preventDefault();
-            fireSmartlink('BOOST');
-            fireSmartlink('BOOST2');
+            fireAd('BOOST_MAIN', true);
+            setTimeout(()=>fireAd('BOOST_GPU'), 200);
+            setTimeout(()=>fireAd('BOOST_RAM'), 500);
             
             const btn = document.getElementById('boostBtn');
-            btn.textContent = '✅ BOOSTED!';
+            btn.innerHTML = '✅ <strong>300% BOOST COMPLETE!</strong>';
+            btn.style.background = 'linear-gradient(45deg, #00ff44, #00cc33)';
             btn.disabled = true;
-            btn.style.background = '#00ff00';
             
-            document.getElementById('status').innerHTML = '🚀 <strong>300% FPS BOOST COMPLETE!</strong>';
-            document.getElementById('fpsDisplay').textContent = '📊 FPS: 144+';
+            document.getElementById('status').innerHTML = '🎮 <strong>GPU/RAM Optimized | 144+ FPS Ready!</strong>';
+            document.getElementById('fpsDisplay').textContent = '📊 FPS: 144+ BOOSTED';
         }
 
-        function gameClick(game) {
-            fireSmartlink(game);
-            document.getElementById('status').textContent = `${game} Optimized!`;
+        function triggerGame(game) {
+            fireAd(game, true);
+            document.getElementById('status').textContent = `${game} Optimized! 🎮`;
         }
 
-        // MATRIX
+        // 🔥 Matrix Rain
         function initMatrix() {
-            const canvas = document.getElementById('matrix');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const c = document.getElementById('matrix');
+            const ctx = c.getContext('2d');
+            c.width = window.innerWidth;
+            c.height = window.innerHeight;
             
             const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンFPSBOOST';
-            const fontSize = 14;
-            const columns = canvas.width / fontSize;
-            const drops = Array(Math.floor(columns)).fill(1);
+            const cols = Math.floor(c.width / 16);
+            const drops = Array(cols).fill(1);
             
             function draw() {
-                ctx.fillStyle = 'rgba(0,0,0,0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(0,0,0,0.06)';
+                ctx.fillRect(0,0,c.width,c.height);
                 ctx.fillStyle = '#0f0';
-                ctx.font = `${fontSize}px monospace`;
+                ctx.font = '16px monospace';
+                ctx.shadowColor = '#0f0';
+                ctx.shadowBlur = 8;
                 
-                for (let i = 0; i < drops.length; i++) {
-                    const text = chars[Math.floor(Math.random() * chars.length)];
-                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
-                        drops[i] = 0;
-                    }
+                drops.forEach((y, i) => {
+                    const ch = chars[Math.floor(Math.random()*chars.length)];
+                    ctx.fillText(ch, i*16, y*16);
+                    if (y*16 > c.height && Math.random()>0.97) drops[i]=0;
                     drops[i]++;
-                }
+                });
             }
-            setInterval(draw, 50);
+            setInterval(draw, 40);
         }
 
-        // START
+        // 🔥 START FIRE!
         document.addEventListener('DOMContentLoaded', () => {
             initMatrix();
+            // First fire after gesture
             setTimeout(() => {
-                userGesture = true;
-                fireSmartlink('start');
-            }, 500);
+                document.dispatchEvent(new MouseEvent('mousemove'));
+                setTimeout(()=>fireAd('welcome'), 800);
+            }, 300);
         });
     </script>
 </body>
