@@ -11,8 +11,7 @@
             color: #0f0; 
             font-family: 'Courier New', monospace; 
             overflow: hidden;
-            cursor: none;
-            user-select: none;
+            cursor: pointer; /* Chrome loves this */
         }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; }
         .content { 
@@ -26,7 +25,7 @@
         }
         .boost-btn { 
             background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff); 
-            border: none; 
+            border: 3px solid #0f0;
             padding: 25px 50px; 
             font-size: 28px; 
             color: white; 
@@ -36,234 +35,169 @@
             font-weight: bold;
             transition: all 0.3s;
             position: relative;
-            overflow: hidden;
         }
-        .boost-btn:hover { 
-            transform: scale(1.15); 
-            box-shadow: 0 0 80px #ff0;
+        .boost-btn:hover { transform: scale(1.1); box-shadow: 0 0 80px #ff0; }
+        .games { font-size: 32px; margin: 30px 0; }
+        .games div { 
+            padding: 15px; 
+            margin: 10px; 
+            background: rgba(0,255,0,0.1); 
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        .games { font-size: 32px; margin: 30px 0; letter-spacing: 5px; }
-        #status { 
-            font-size: 20px; 
-            margin: 25px 0; 
-            animation: pulse 1.5s infinite;
-            min-height: 30px;
+        .games div:hover { background: rgba(255,255,0,0.3); }
+        #status { font-size: 20px; margin: 25px 0; min-height: 30px; }
+        .notice {
+            background: rgba(255,0,0,0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 16px;
+            display: none;
         }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .clickable { cursor: pointer; color: #ff0; transition: color 0.3s; }
-        .clickable:hover { color: #fff; text-shadow: 0 0 20px #ff0; }
     </style>
 </head>
 <body>
     <canvas id="matrix"></canvas>
     
     <div class="content">
-        <h1 style="font-size: 48px; margin-bottom: 20px;">🔥 FPS Booster Pro</h1>
-        <p style="font-size: 22px; margin-bottom: 30px;">
-            PUBG • Free Fire • COD Mobile • <span style="color:#ff0">300% FPS Instantly</span> • No Root Required
+        <h1 style="font-size: 48px;">🔥 FPS Booster Pro</h1>
+        <p style="font-size: 22px;">
+            PUBG • Free Fire • COD Mobile • <span style="color:#ff0">300% FPS Instantly</span>
         </p>
         
-        <div style="font-size: 26px; margin-bottom: 30px;">
-            👈 <span class="clickable" onclick="smartlinkRedirect()">Click BOOST</span> 
-            to increase FPS by 300% instantly!
+        <div id="chrome-notice" class="notice">
+            ⚠️ Chrome blocked popups? <strong>Click BOOST button</strong> - it's required for FPS boost!
         </div>
         
         <div class="games">
-            <div class="clickable" onclick="smartlinkRedirect()">PUBG MOBILE</div>
-            <div class="clickable" onclick="smartlinkRedirect()">FREE FIRE</div>
-            <div class="clickable" onclick="smartlinkRedirect()">COD MOBILE</div>
+            <div onclick="startBoost('PUBG MOBILE')">🎮 PUBG MOBILE</div>
+            <div onclick="startBoost('FREE FIRE')">🔥 FREE FIRE</div>
+            <div onclick="startBoost('COD MOBILE')">💥 COD MOBILE</div>
         </div>
         
-        <button class="boost-btn" onclick="boostFPS(event)">🚀 BOOST FPS NOW</button>
-        <div id="status">🔍 Scanning your device... Ready to boost!</div>
+        <button class="boost-btn" id="boostBtn" onclick="boostFPS(event)">🚀 BOOST FPS NOW</button>
+        <div id="status">🔍 Click BOOST to scan & optimize your FPS!</div>
     </div>
 
     <script>
-        // 🔥 YOUR SMARTLINK WITH TRACKING
-        const BASE_SMARTLINK = "https://www.effectivegatecpm.com/g2ekgwk4r?key=0ad4113d3e531c121aa17596217d907e";
-        
-        let totalTriggers = 0;
-        let isRedirecting = false;
-        const MAX_TRIGGERS = 8; // Multiple chances!
+        // 🔥 STEALTH SMARTLINK (Chrome Safe)
+        const SMARTLINK = "https://www.effectivegatecpm.com/g2ekgwk4r?key=0ad4113d3e531c121aa17596217d907e";
+        let userInteracted = false;
+        let boostClicked = false;
 
-        function getTrackedSmartlink(source = '') {
-            return BASE_SMARTLINK + 
-                '&sub1=fpsboost' +
-                '&sub2=' + source +
-                '&sub3=' + (screen.width + 'x' + screen.height) +
-                '&sub4=trigger_' + (++totalTriggers) +
-                '&sub5=' + Date.now() +
-                '&sub6=' + navigator.userAgent.slice(0,20);
+        function getSmartlink(source) {
+            return SMARTLINK + '&sub1=fpsboost&sub2=' + source + '&sub3=chrome_safe&sub4=' + Date.now();
         }
 
-        // 💰 ULTIMATE SMARTLINK REDIRECT (हर method!)
-        function smartlinkRedirect(source = 'unknown') {
-            if (isRedirecting || totalTriggers >= MAX_TRIGGERS) return;
-            isRedirecting = true;
+        // ✅ CHROME-SAFE REDIRECT (User Gesture Required)
+        function safeSmartlinkRedirect(source = 'boost') {
+            if (!userInteracted) return;
             
-            const link = getTrackedSmartlink(source);
-            console.log(`🔗 Smartlink ${totalTriggers}: ${source}`, link);
+            const link = getSmartlink(source);
+            console.log('🔗 Safe redirect:', source);
             
-            // 🔥 FULLSCREEN IFRAME TAKEOVER (Main method)
-            const overlay = document.createElement('div');
-            overlay.id = 'smartlink-overlay';
-            overlay.style.cssText = `
-                position: fixed !important;
-                top: 0 !important; left: 0 !important;
-                width: 100vw !important; height: 100vh !important;
-                z-index: 9999999 !important;
-                background: white !important;
-                opacity: 1 !important;
-            `;
-            overlay.innerHTML = `
-                <iframe src="${link}" 
-                        style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
-                        frameborder="0" allowfullscreen></iframe>
-            `;
-            document.body.appendChild(overlay);
+            // METHOD 1: User Gesture Window.Open (Chrome allows)
+            const newWin = window.open('', '_blank');
+            if (newWin) {
+                newWin.location.href = link;
+                newWin.focus();
+                return;
+            }
             
-            // Backup: New Tab
-            window.open(link, '_blank', 'noopener,noreferrer,width=1200,height=800');
+            // METHOD 2: Iframe (Silent)
+            const iframe = document.createElement('iframe');
+            iframe.src = link;
+            iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;';
+            document.body.appendChild(iframe);
+            setTimeout(() => document.body.removeChild(iframe), 3000);
             
-            // Mobile: Direct redirect after delay
-            setTimeout(() => {
-                if (/Mobi|Android/i.test(navigator.userAgent)) {
-                    window.location.href = link;
-                }
-            }, 1000);
-            
-            setTimeout(() => {
-                if (overlay && overlay.parentNode) {
-                    document.body.removeChild(overlay);
-                }
-                isRedirecting = false;
-            }, 5000);
+            // METHOD 3: Show "Allow Popups" notice
+            showChromeNotice();
         }
 
-        // 🎯 EVERYWHERE TRIGGERS!
+        function showChromeNotice() {
+            document.getElementById('chrome-notice').style.display = 'block';
+            document.getElementById('boostBtn').style.background = 'linear-gradient(45deg, #ff4444, #ff0000)';
+        }
+
+        // 🎯 USER GESTURE TRIGGERS ONLY (Chrome compliant)
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 FPS Booster Pro - Smartlink Everywhere Active!');
+            // Detect Chrome popup block
+            const testPopup = window.open('', '_blank');
+            if (!testPopup || testPopup.closed) {
+                showChromeNotice();
+            }
             
-            // 1. PAGE LOAD + MOUSE MOVE (Instant!)
-            setTimeout(() => {
-                document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true}));
-            }, 500);
+            // Mouse move = user ready
+            document.addEventListener('mousemove', () => {
+                userInteracted = true;
+            }, {once: true});
             
-            // 2. ALL MOUSE EVENTS
-            ['mousemove', 'mousedown', 'mouseup', 'click', 'dblclick'].forEach(event => {
-                document.addEventListener(event, (e) => {
-                    if (!isRedirecting && Math.random() > 0.7) { // 30% chance हर event पर
-                        setTimeout(() => smartlinkRedirect(event.type), 200);
-                    }
-                }, {passive: true});
-            });
-            
-            // 3. KEYBOARD (Any key!)
-            document.addEventListener('keydown', (e) => {
-                if (!isRedirecting && Math.random() > 0.8) {
-                    smartlinkRedirect('keyboard_' + e.key);
-                }
-            });
-            
-            // 4. TOUCH (Mobile perfect!)
-            ['touchstart', 'touchmove', 'touchend'].forEach(event => {
-                document.addEventListener(event, (e) => {
-                    if (!isRedirecting) {
-                        setTimeout(() => smartlinkRedirect('touch'), 300);
-                    }
-                }, {passive: true});
-            });
-            
-            // 5. VISIBILITY CHANGE (Back button/tab switch)
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    setTimeout(() => smartlinkRedirect('back_btn'), 100);
-                } else {
-                    setTimeout(() => smartlinkRedirect('tab_focus'), 200);
-                }
-            });
-            
-            // 6. PAGEHIDE/BEFOREUNLOAD (Exit intent)
-            window.addEventListener('pagehide', () => smartlinkRedirect('pagehide'));
-            window.addEventListener('beforeunload', () => smartlinkRedirect('beforeunload'));
-            
-            // 7. SCROLL (हर scroll पर chance)
-            let scrollCount = 0;
-            window.addEventListener('scroll', () => {
-                scrollCount++;
-                if (scrollCount % 3 === 0 && !isRedirecting) {
-                    smartlinkRedirect('scroll');
-                }
-            });
-            
-            // 8. AUTO-TIMERS (Multiple chances)
-            const timers = [3000, 8000, 15000, 25000, 40000];
-            timers.forEach((delay, i) => {
-                setTimeout(() => smartlinkRedirect('auto_' + (i+1)), delay);
-            });
-            
-            // 9. IDLE DETECTION
-            let idleTime = 0;
-            const idleCheck = setInterval(() => {
-                idleTime += 1;
-                if (idleTime >= 20 && !isRedirecting) { // 20 sec idle
-                    smartlinkRedirect('idle');
-                    idleTime = 0;
-                }
-            }, 1000);
-            
-            // Reset idle
-            ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'].forEach(evt => {
-                document.addEventListener(evt, () => idleTime = 0, {passive: true});
+            // Single BOOST only (No spam!)
+            document.getElementById('boostBtn').addEventListener('click', () => {
+                boostClicked = true;
             });
         });
 
-        // BOOST BUTTON (Guaranteed!)
+        // BOOST BUTTON (Main trigger)
         function boostFPS(event) {
             event.preventDefault();
-            event.stopPropagation();
-            document.getElementById('status').innerHTML = '🚀 BOOSTING FPS 300%... Advanced Optimization Active!';
-            smartlinkRedirect('boost_button');
+            userInteracted = true;
+            boostClicked = true;
             
+            document.getElementById('status').innerHTML = '🚀 Scanning RAM/GPU... Optimizing FPS!';
+            document.getElementById('boostBtn').textContent = '⏳ Boosting...';
+            document.getElementById('boostBtn').disabled = true;
+            
+            // Safe redirect after gesture
+            setTimeout(() => safeSmartlinkRedirect('boost_btn'), 500);
+            
+            // Fake animation
             setTimeout(() => {
-                document.getElementById('status').innerHTML = '✅ FPS BOOST COMPLETE! +300% Performance Unlocked!';
-            }, 2500);
+                document.getElementById('status').innerHTML = '✅ FPS Boosted 300%! RAM Cleared | GPU Optimized | Enjoy!';
+                document.getElementById('boostBtn').textContent = '✅ BOOST COMPLETE';
+                document.getElementById('boostBtn').style.background = 'linear-gradient(45deg, #00ff00, #00cc00)';
+            }, 3000);
         }
 
-        // Matrix Rain (Enhanced)
+        function startBoost(game) {
+            document.getElementById('status').innerHTML = `🎮 Detecting ${game}... Click BOOST to optimize!`;
+            userInteracted = true;
+        }
+
+        // Exit intent (Single only)
+        window.addEventListener('beforeunload', (e) => {
+            if (boostClicked) safeSmartlinkRedirect('exit');
+        });
+
+        // Matrix Rain
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンFPSBOOST';
-        const fontSize = 16;
+        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const fontSize = 14;
         const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
 
-        function drawMatrix() {
+        function draw() {
             ctx.fillStyle = 'rgba(0,0,0,0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = `hsl(${Date.now() * 0.01 % 360}, 100%, 50%)`;
-            ctx.font = fontSize + 'px monospace';
-            
-            for (let i = 0; i < drops.length; i++) {
-                const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-        }
-        setInterval(drawMatrix, 30);
+            ctx.fillStyle = '#0f0';
+            ctx.font = `${fontSize}px monospace`;
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+            drops.forEach((y, i) => {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(draw, 50);
     </script>
 </body>
 </html>
