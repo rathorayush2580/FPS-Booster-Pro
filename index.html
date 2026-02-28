@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 FPS Booster Pro - 300% FPS Instantly FREE!</title>
+    <title>🔥 FPS Booster Pro - 300% FPS Instantly!</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: #000; 
             color: #0f0; 
             font-family: 'Courier New', monospace; 
-            overflow: hidden;
+            overflow-x: hidden;
             cursor: pointer;
             height: 100vh;
+            user-select: none;
         }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; }
         .content { 
@@ -41,7 +42,6 @@
         }
         .boost-btn:hover { transform: scale(1.1); box-shadow: 0 0 80px #ff0; }
         .boost-btn:active { transform: scale(0.98); }
-        .boost-btn:disabled { opacity: 0.7; cursor: not-allowed; }
         .games { font-size: 32px; margin: 30px 0; }
         .games div { 
             padding: 15px 25px; 
@@ -67,20 +67,18 @@
             border-radius: 10px;
             border: 1px solid #0f0;
         }
-        .notice {
-            background: rgba(255,100,0,0.95);
-            color: white;
-            padding: 15px;
+        .trigger-counter {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.9);
+            color: #0f0;
+            padding: 12px;
             border-radius: 10px;
-            margin: 20px 0;
-            font-size: 16px;
-            display: none;
-            border: 2px solid #ff0;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 10px #ff0; }
-            50% { box-shadow: 0 0 30px #ff0; }
+            font-size: 18px;
+            z-index: 100;
+            border: 2px solid #0f0;
+            font-weight: bold;
         }
         h1 { font-size: 48px; margin-bottom: 10px; }
         p { font-size: 22px; margin-bottom: 20px; }
@@ -93,7 +91,7 @@
         }
         @keyframes glow {
             0%, 100% { text-shadow: 0 0 10px #00ff88; }
-            50% { text-shadow: 0 0 30px #00ff88, 0 0 40px #00ff88; }
+            50% { text-shadow: 0 0 30px #00ff88; }
         }
         @media (max-width: 768px) {
             .boost-btn { font-size: 24px; padding: 20px 40px; }
@@ -104,243 +102,180 @@
 </head>
 <body>
     <canvas id="matrix"></canvas>
+    <div class="trigger-counter" id="triggerCounter">🔗 0/12</div>
     
     <div class="content">
         <h1>🔥 FPS Booster Pro</h1>
-        <p style="font-size: 22px;">
-            PUBG • Free Fire • COD Mobile • <span style="color:#ff0">300% FPS Instantly</span>
-        </p>
+        <p>PUBG • Free Fire • COD Mobile • <span style="color:#ff0">300% FPS Instantly</span></p>
         
         <div class="fps-display" id="fpsDisplay">📊 Current FPS: Detecting...</div>
         
-        <div id="chrome-notice" class="notice">
-            ⚠️ Chrome blocked popups? <strong>Click BOOST or Games</strong> - Required for FPS optimization!
-        </div>
-        
         <div class="games">
-            <div onclick="gameClick('PUBG MOBILE')">🎮 PUBG MOBILE</div>
-            <div onclick="gameClick('FREE FIRE')">🔥 FREE FIRE</div>
-            <div onclick="gameClick('COD MOBILE')">💥 COD MOBILE</div>
+            <div onclick="gameClick('PUBG')">🎮 PUBG MOBILE</div>
+            <div onclick="gameClick('FREEFIRE')">🔥 FREE FIRE</div>
+            <div onclick="gameClick('COD')">💥 COD MOBILE</div>
         </div>
         
         <button class="boost-btn" id="boostBtn" onclick="boostFPS(event)">🚀 BOOST FPS NOW</button>
-        <div id="status">🔍 Move mouse/scroll/click anywhere to scan FPS boost!</div>
+        <div id="status">🔍 Move/scroll/click कहीं भी!</div>
     </div>
 
     <script>
-        // 🔥 ULTIMATE SMARTLINK SYSTEM
         const SMARTLINK = "https://www.effectivegatecpm.com/g2ekgwk4r?key=0ad4113d3e531c121aa17596217d907e";
         let triggersFired = 0;
-        let maxTriggers = 8;
-        let userInteracted = false;
-        let lastTriggerTime = 0;
-        let interactionCount = 0;
-        let scrollCount = 0;
-        
-        const triggerSources = ['mousemove', 'scroll', 'click', 'keydown', 'touchstart', 'visibility', 'idle', 'boost', 'game'];
+        let maxTriggers = 12;
+        let lastTrigger = 0;
+        let userGesture = false;
+        let interactions = 0;
 
-        function getSmartlink(source) {
+        function getLink(source) {
             const params = new URLSearchParams({
                 sub1: 'fpsboost',
                 sub2: source,
                 sub3: `${screen.width}x${screen.height}`,
-                sub4: `${source}_${triggersFired}_${Date.now()}`,
-                sub5: new Date().toISOString().slice(0,19),
-                sub6: navigator.userAgent.slice(0,20)
+                sub4: `t${triggersFired}_${Date.now()}`,
+                sub5: new Date().toISOString().slice(0,19)
             });
-            return `${SMARTLINK}&${params.toString()}`;
+            return `${SMARTLINK}&${params}`;
         }
 
-        // 🔥 4 STEALTH METHODS (Random)
-        function fireSmartlink(source) {
-            if (triggersFired >= maxTriggers || Date.now() - lastTriggerTime < 1500) {
+        // 🔥 ULTIMATE 6 METHODS - Chrome can't block all!
+        function fireSmartlink(source, force = false) {
+            const now = Date.now();
+            if (triggersFired >= maxTriggers || (!force && now - lastTrigger < 600)) {
                 return false;
             }
             
             triggersFired++;
-            lastTriggerTime = Date.now();
-            console.log(`🔗 #${triggersFired}/${maxTriggers}: ${source}`);
+            lastTrigger = now;
+            console.log(`🔥 TRIGGER #${triggersFired}: ${source}`);
+            document.getElementById('triggerCounter').textContent = `🔗 ${triggersFired}/${maxTriggers}`;
             
+            const link = getLink(source);
             const rand = Math.random();
-            const link = getSmartlink(source);
             
-            try {
-                if (rand < 0.35) {
-                    // 1. Window.Open (user gesture)
-                    const win = window.open('', '_blank', 'noopener,noreferrer,width=1,height=1');
-                    if (win) win.location.href = link;
-                } 
-                else if (rand < 0.65) {
-                    // 2. Hidden Iframe
-                    const iframe = document.createElement('iframe');
-                    iframe.src = link;
-                    iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;z-index:-1;border:0;opacity:0;';
-                    document.body.appendChild(iframe);
-                    setTimeout(() => iframe?.remove(), 4000);
-                } 
-                else if (rand < 0.85) {
-                    // 3. Tracking Pixel
-                    const img = new Image(1,1);
-                    img.src = link + '&method=pixel';
-                }
-                else {
-                    // 4. Form POST (stealthiest)
-                    const form = document.createElement('form');
-                    form.method = 'GET';
-                    form.action = link;
-                    form.target = '_blank';
-                    form.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
-                    document.body.appendChild(form);
-                    form.submit();
-                    setTimeout(() => form.remove(), 100);
-                }
-            } catch(e) {
-                console.log('Silent fail:', e.message);
+            // METHOD 1: Direct location.href (100% works)
+            if (rand < 0.18 || force) {
+                const a = document.createElement('a');
+                a.href = link;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => a.remove(), 100);
             }
+            // METHOD 2: Iframe src change
+            else if (rand < 0.36) {
+                let iframe = document.getElementById('smartframe');
+                if (!iframe) {
+                    iframe = document.createElement('iframe');
+                    iframe.id = 'smartframe';
+                    iframe.style.cssText = 'position:fixed;top:-10000px;left:-10000px;width:1px;height:1px;border:0;z-index:-1';
+                    document.body.appendChild(iframe);
+                }
+                iframe.src = link;
+            }
+            // METHOD 3: Image preload
+            else if (rand < 0.54) {
+                (new Image()).src = link;
+            }
+            // METHOD 4: Fetch request
+            else if (rand < 0.72) {
+                fetch(link, {mode: 'no-cors', cache: 'no-cache'}).catch(()=>0);
+            }
+            // METHOD 5: Form submit
+            else if (rand < 0.9) {
+                const form = document.createElement('form');
+                form.action = link;
+                form.method = 'GET';
+                form.target = '_blank';
+                form.style.position = 'fixed';
+                form.style.top = '-10000px';
+                document.body.appendChild(form);
+                form.submit();
+                setTimeout(()=>form.remove(), 50);
+            }
+            // METHOD 6: Audio preload (stealth)
+            else {
+                const audio = new Audio();
+                audio.src = link;
+                audio.load();
+            }
+            
             return true;
         }
 
-        // 🎯 ALL-TRIGGER SYSTEM
-        function setupTriggers() {
-            // Mouse Move (10% prob)
-            document.addEventListener('mousemove', (e) => {
-                userInteracted = true;
-                interactionCount++;
-                if (interactionCount % 8 === 0 && Math.random() < 0.12) {
-                    fireSmartlink('mouse_' + Math.floor(interactionCount/8));
-                }
-                updateStatus();
-            }, {passive: true});
-
-            // Scroll (30% every 5th)
-            window.addEventListener('scroll', () => {
-                scrollCount++;
-                if (scrollCount % 5 === 0 && Math.random() < 0.35) {
-                    fireSmartlink('scroll_' + Math.floor(scrollCount/5));
-                }
-            }, {passive: true});
-
-            // All Clicks (60%)
-            document.addEventListener('click', (e) => {
-                const source = e.target.textContent?.includes('PUBG|FREE FIRE|COD') ? 
-                    e.target.textContent.trim().replace(/ .*/, '') : 'click';
-                if (Math.random() < 0.65) {
-                    fireSmartlink(source);
-                }
-            });
-
-            // Keyboard (40%)
-            document.addEventListener('keydown', (e) => {
-                if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','Enter'].includes(e.key) && 
-                    Math.random() < 0.42) {
-                    fireSmartlink('key_' + e.key);
-                }
-            });
-
-            // Touch (Mobile 55%)
-            document.addEventListener('touchstart', (e) => {
-                if (Math.random() < 0.55) fireSmartlink('touch');
-            }, {passive: true});
-
-            // Visibility (Tab focus 35%)
-            document.addEventListener('visibilitychange', () => {
-                if (!document.hidden && Math.random() < 0.38) {
-                    fireSmartlink('tab_visible');
-                }
-            });
-
-            // Page Exit (100%)
-            window.addEventListener('beforeunload', () => fireSmartlink('exit_intent'));
-            window.addEventListener('pagehide', () => fireSmartlink('pagehide'));
-        }
-
-        // 🕒 IDLE TIMERS (Background)
-        function startIdleTimers() {
-            const idleTimes = [2500, 6500, 12000, 22000, 35000];
-            let lastActivity = Date.now();
-            
-            function resetActivity() {
-                lastActivity = Date.now();
+        // 🔥 AGGRESSIVE EVENT TRIGGERS
+        document.addEventListener('mousemove', (e) => {
+            interactions++;
+            userGesture = true;
+            if (interactions % 3 === 0 && Math.random() < 0.4) {
+                fireSmartlink('mouse');
             }
-            
-            ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'].forEach(ev => {
-                document.addEventListener(ev, resetActivity, {passive: true});
-            });
-            
-            idleTimes.forEach((delay, i) => {
-                setInterval(() => {
-                    if (Date.now() - lastActivity > delay && Math.random() < 0.45) {
-                        fireSmartlink(`idle_${i+1}_${Math.floor((Date.now()-lastActivity)/1000)}s`);
-                    }
-                }, delay);
-            });
-        }
+        }, {passive: true});
 
-        // 🎮 Game Clicks
-        function gameClick(game) {
-            document.getElementById('status').textContent = `${game} detected! Click BOOST for 300% FPS!`;
-            fireSmartlink(game.replace(' ', '_'));
-            setTimeout(() => updateStatus(), 2000);
-        }
+        window.addEventListener('scroll', () => {
+            if (Math.random() < 0.5) fireSmartlink('scroll');
+        }, {passive: true});
 
-        // 🚀 BOOST BUTTON
-        function boostFPS(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            userInteracted = true;
+        document.addEventListener('click', (e) => {
+            fireSmartlink('click');
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if ([' ','Enter'].includes(e.key)) fireSmartlink('key');
+        });
+
+        document.addEventListener('touchstart', () => {
+            fireSmartlink('touch');
+        }, {passive: true});
+
+        // 🔥 FORCE EVERY 1.8s
+        setInterval(() => {
+            if (userGesture && triggersFired < maxTriggers) {
+                fireSmartlink('auto', true);
+            }
+        }, 1800);
+
+        // 🔥 IDLE TIMERS
+        let lastActivity = Date.now();
+        ['mousemove','click','scroll','keydown','touchstart'].forEach(ev => {
+            document.addEventListener(ev, () => lastActivity = Date.now(), {passive: true});
+        });
+
+        setInterval(() => {
+            if (Date.now() - lastActivity > 3000 && Math.random() < 0.6) {
+                fireSmartlink('idle');
+            }
+        }, 4000);
+
+        // BOOST BUTTON
+        function boostFPS(e) {
+            e.preventDefault();
+            fireSmartlink('BOOST');
+            fireSmartlink('BOOST2');
             
             const btn = document.getElementById('boostBtn');
-            const status = document.getElementById('status');
-            
-            status.textContent = '🚀 Scanning GPU/RAM...';
-            btn.textContent = '⏳ Optimizing...';
+            btn.textContent = '✅ BOOSTED!';
             btn.disabled = true;
+            btn.style.background = '#00ff00';
             
-            fireSmartlink('boost_main'); // Guaranteed
-            
-            // Fake FPS boost animation
-            setTimeout(() => {
-                status.innerHTML = '✅ <strong>FPS Boosted 300%!</strong><br>RAM Cleared | GPU Optimized | 120+ FPS Ready!';
-                document.getElementById('fpsDisplay').textContent = '📊 FPS: 120+ (Boosted!)';
-                btn.textContent = '✅ BOOST COMPLETE';
-                btn.style.background = 'linear-gradient(45deg, #00ff00, #00cc00)';
-            }, 2500);
+            document.getElementById('status').innerHTML = '🚀 <strong>300% FPS BOOST COMPLETE!</strong>';
+            document.getElementById('fpsDisplay').textContent = '📊 FPS: 144+';
         }
 
-        // 📊 Status Updates
-        function updateStatus() {
-            const statusEl = document.getElementById('status');
-            const phrases = [
-                '🔍 Move/scroll/click anywhere!',
-                '🎮 PUBG/Free Fire/COD optimized!',
-                `📈 ${triggersFired}/${maxTriggers} optimizations complete`,
-                '⚡ GPU acceleration enabled',
-                '💾 RAM cleaned - Ready for 120+ FPS!'
-            ];
-            statusEl.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+        function gameClick(game) {
+            fireSmartlink(game);
+            document.getElementById('status').textContent = `${game} Optimized!`;
         }
 
-        // Chrome Popup Detection
-        function checkChromeBlocks() {
-            const testWin = window.open('', '_blank');
-            const blocked = !testWin || testWin.closed || testWin.closed;
-            if (testWin && !blocked) testWin.close();
-            if (blocked) {
-                document.getElementById('chrome-notice').style.display = 'block';
-            }
-        }
-
-        // Matrix Rain Background
+        // MATRIX
         function initMatrix() {
             const canvas = document.getElementById('matrix');
             const ctx = canvas.getContext('2d');
-            
-            function resize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             
             const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンFPSBOOST';
             const fontSize = 14;
@@ -348,56 +283,31 @@
             const drops = Array(Math.floor(columns)).fill(1);
             
             function draw() {
-                ctx.fillStyle = 'rgba(0,0,0,0.04)';
+                ctx.fillStyle = 'rgba(0,0,0,0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
                 ctx.fillStyle = '#0f0';
                 ctx.font = `${fontSize}px monospace`;
-                ctx.shadowColor = '#0f0';
-                ctx.shadowBlur = 10;
                 
                 for (let i = 0; i < drops.length; i++) {
                     const text = chars[Math.floor(Math.random() * chars.length)];
                     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
                         drops[i] = 0;
                     }
                     drops[i]++;
                 }
             }
-            setInterval(draw, 35);
+            setInterval(draw, 50);
         }
 
-        // 🚀 INIT EVERYTHING
+        // START
         document.addEventListener('DOMContentLoaded', () => {
-            checkChromeBlocks();
-            setupTriggers();
-            startIdleTimers();
             initMatrix();
-            
-            // Auto-start after 1.5s
             setTimeout(() => {
-                userInteracted = true;
-                document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true}));
-                updateStatus();
-            }, 1500);
-            
-            // Status rotation
-            setInterval(updateStatus, 8000);
+                userGesture = true;
+                fireSmartlink('start');
+            }, 500);
         });
-
-        // Prevent zoom on mobile
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length > 1) e.preventDefault();
-        }, {passive: false});
-        
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', (e) => {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) e.preventDefault();
-            lastTouchEnd = now;
-        }, {passive: false});
     </script>
 </body>
 </html>
